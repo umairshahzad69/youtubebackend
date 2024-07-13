@@ -1,7 +1,9 @@
 import mongoose, { Schema } from "mongoose";
-import { JsonWebTokenError } from "jsonwebtoken";
-import { bcrypt } from "bcrypt";
+import pkg  from "jsonwebtoken";
+import bcrypt  from "bcrypt";
 
+// Destructure the required methods
+const { sign, JsonWebTokenError } = pkg;
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -60,7 +62,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 };
 
 userSchema.methods.generateAccessToken = function () {
-  return JsonWebTokenError.sign(
+  return sign(
     {
       _id: this._id,
       email: this.email,
@@ -74,7 +76,7 @@ userSchema.methods.generateAccessToken = function () {
   );
 };
 userSchema.methods.generateRefreshToken = function () {
-  return JsonWebTokenError.sign(
+  return sign(
     {
       _id: this._id,
     },
